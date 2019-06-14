@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      #app {
+        width: 600px;
+        margin: 10px auto;
+      }
+
+      .tb {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .tb th {
+        background-color: #0094ff;
+        color: white;
+      }
+
+      .tb td,
+      .tb th {
+        padding: 5px;
+        border: 1px solid black;
+        text-align: center;
+      }
+
+      .add {
+        padding: 5px;
+        border: 1px solid black;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="add">
+        品牌名称:
+        <input type="text" v-focus v-model="name" @keyup.enter="foo"/>
+        <input type="button" value="添加" v-on:click="fn" />
+      </div>
+
+      <div class="add">
+        品牌名称:
+        <input type="text" v-model="searchKey" placeholder="请输入搜索条件" />
+      </div>
+
+      <div>
+        <table class="tb">
+          <tr>
+            <th>编号</th>
+            <th>品牌名称</th>
+            <th>创立时间</th>
+            <th>操作</th>
+          </tr>
+          <tr v-for="(item,index) in newArr">
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.date | time }}</td>
+            <td>
+              <a href="#" v-on:click="del(index)">删除</a>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4" v-if="newArr.length===0">没有品牌数据</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <script src="./vue.js"></script>
+    <script src="./moment.js"></script>
+    <script>
+      // 思路:
+      //  数据的渲染：
+      //     1）准备数据:定义到 vm 的 data 中
+      //     2）渲染到页面上
+      //     数据的新增：
+      //     1）给新增输入框双向绑定（v-model）数据 brand
+      //     2）给新增按钮添加点击事件
+      //       2.1 获取新增输入框中的数据
+      //       2.2 将数据转为一个对象
+      //       2.3 将对象添加到数组 arr 中
+      //       数据的删除：
+      //     1）给删除按钮绑定点击事件并且传入要删除数据的 index
+      //     2）将 index 对应的下标从数据的中删除
+      //   补充功能：
+      //     1）删除的提示
+      //     2）判断是否存在品牌数据
+
+      // // 定义全局过滤器
+      //  Vue.filter('time', function (value) {
+      //     // 处理时间：用一个第三方包来处理 moment
+      //     return moment(value).format('YYYY-MM-DD hh:mm:ss a')
+      //   })
+
+      // mounted: 类似于 window.location(页面打开就执行)
+
+      //   // 注册一个全局自定义指令 `v-focus`,(给元素设置属性ref)
+      //   Vue.directive('focus', {
+      //     // 当被绑定的元素插入到 DOM 中时……
+      //   inserted(el) {
+      //      // 聚焦元素
+      //     el.focus();
+      //   }
+      // });
+
+      var arr = JSON.parse(localStorage.getItem("storeArr") || "[]");
+
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          // 下面要用到的,都要在这类似于声明一下,还有name的值很特殊,记得window.name=''
+          sel: "",
+          arr: arr,
+          searchKey: "",
+          name: "",
+        },
+        methods: {
+          fn() {
+            // 将对象添加到数组中
+            if (this.name != "")
+              vm.arr.push({
+                name: this.name,
+                date: Date.now()
+              });
+            localStorage.setItem("storeArr", JSON.stringify(this.arr));
+            this.name = "";
+          },
+          del(val) {
+            console.log(val);
+            if (confirm("您确定删除吗")) {
+              // 将 index 对应的数据从数组中删除
+              vm.arr.splice(val, 1);
+            }
+          },
+          foo(){
+            this.fn()
+          }
+        },
+        // 定义局部过滤器
+        filters: {
+          time(value) {
+            return moment(value).format("YYYY-MM-DD hh:mm:ss a");
+          }
+        },
+        //局部指令(给元素设置属性ref)，组件中也接受一个 directives 的选项
+        directives: {
+          focus: {
+            // 指令的定义
+            inserted: function(el) {
+              el.focus();
+            }
+          }
+        },
+        // 计算属性
+        computed: {
+          newArr() {
+            // 1.filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中
+            //   符合条件的所有元素。(个人理解有隐藏的遍历)
+            // 2.item => 是一定要箭头函数的,不然指向的是window,函数会自己执行的,
+            //   大多this都是指向windows
+            return this.arr.filter(item => {
+              // 写法一
+              // 1.includes()：返回布尔值，表示是否找到了参数字符串。*模糊查询
+              // 2.startsWith()：返回布尔值，表示参数字符串是否在原字符串的头部。
+              // 3.endsWith()：返回布尔值，表示参数字符串是否在原字符串的尾部。
+              // 4.当 this.searchKey = '',时返回true,可以这么理解,任何字面量都有''看不到而已
+              // 5.item代表arr,我觉得有隐藏的遍历,遍历arr拿它和你想要的做对比,false就去除,
+              //   true就留下.为什么?这是它们封装规定好的,所以自己百度去,下面是网址
+              //   自己百度https://www.runoob.com/jsref/jsref-filter.html
+              // return item.name.includes(this.searchKey);
+
+              // 写法二
+              return item.name.indexOf(this.searchKey) !== -1
+
+
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

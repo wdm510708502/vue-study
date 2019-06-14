@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .colorGreen {
+        color: red;
+      }
+
+      .colorRed {
+        color: red;
+      }
+      .fontSize {
+        font-size: 20px;
+      }
+
+      .colorBlue{
+        color:blue,
+      }
+
+      .blueBig{
+        font-size:22px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <span v-bind:class="{colorGreen: isGreen}">我是麦兜哈</span>
+      <br />
+      <button v-on:click="fn">点我切换</button>
+    </div>
+
+    <div id="app1">
+      <div v-bind:class="obj">
+          麦兜的小弟
+      </div>
+     
+      <button @click="changeColor">点我变色变大</button>
+    </div>
+
+     <div id="app2">
+       <div v-bind:class="[a,b]">
+           麦兜的大哥
+       </div>
+      
+     </div>
+
+    <script src="./vue.js"></script>
+    <script>
+      //v-bind绑定元素的class
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          isGreen: true
+        },
+        methods: {
+          fn() {
+            this.isGreen = !this.isGreen;
+          }
+        }
+      });
+
+      // v-bind绑定元素的class:以对象的形式绑定,最好用
+      var vm1 = new Vue({
+          el:'#app1',
+          data:{
+            obj:{
+                colorRed: false,
+                fontSize: false
+            }
+          },
+          methods:{
+            changeColor(){
+                this.obj.colorRed = !this.obj.colorRed
+                this.obj.fontSize = !this.obj.fontSize
+            }
+          }
+      })
+
+      //v-bind绑定元素的class:以数组的形式
+      var vm2 = new Vue({
+        el:'#app2',
+        data:{
+       
+          a:'colorBlue',
+          b:'blueBig'
+          
+        }
+      })
+    </script>
+  </body>
+</html>

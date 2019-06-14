@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="fn">添加一个方法</button>
+        <button @click="bar">箭头函数</button>
+        <button @click="foo">函数中的函数</button>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    window.name = "宋小宝"
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            name: '林志玲'
+        },
+        methods: {
+            fn() {
+                // 以后从 data 中取值，直接 this.xxx
+                console.log(this.name)
+            },
+            // 1.箭头函数绑定了父级作用域的上下文,且在创建时就被确定了,函数上下文的调用方法
+            // call(),apply(),bind(),都不能更改.
+            // 2.但在vue中我们需要想尽办法把this指向我们实例出来的vue,比如当前的的是vm
+
+            // 这个是不行的,指向了windos
+            bar: () => {
+                console.log(this.name)
+            },
+
+            // 这个就符合我们想要的条件
+            foo() {
+                // 计时器的this默认指向了window但箭头函数使它改变了,绑定了
+                // 父级作用域的上下文,也就是foo(),而foo()指向了vm
+                setTimeout(() => {
+                    console.log(this.name)
+                }, 1000)
+            }
+        }
+    })
+
+    vm.fn() //林志玲
+    console.log(vm.$data); //访问原始数据
+    console.log(vm.$methods);  //这个就不行了,得到是undefined
+</script>
+
+</html>

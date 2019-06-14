@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .colorGreen{
+        color:red
+    }
+    
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 修饰符,可以同时点多个,比如@click.stop.prevent,但一般没这操作 -->
+   <a href="http://www.baicu.com" v-on:click.prevent = "fn">我是麦兜哈</a>
+    
+   <!-- 下拉框 -->
+
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+    var vm = new Vue({
+        el:'#app',
+        methods: {
+            fn(){
+                //实际上在这个函数了,用e.preventDefault();也可以阻止默认事件,但显得麻烦
+                alert("点我,我也不跳转,因为我加了修饰符,阻止了a标签的默认事件")
+            }
+        },
+    })
+    
+    </script>
+</body>
+</html>

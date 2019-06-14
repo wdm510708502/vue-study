@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        {{ name }}<br/>
+        <button @click="getName">得到 name 值</button><br/>
+        <!-- data里或者全局中一定要有声明过,不然是显示不出来的,官方点就是要显式定义,
+             一般是出现在对象比较多,就是想要在视图上获得值,那么这个变量一定要显式定义,
+             它不会动态的创建,仔细想想,this.obj.name拿值的时候,原先没有,也确实拿不到呀
+            -->
+        {{ obj.name }} <br/>
+        <button @click="addObj">点我向 obj 中添加属性</button>
+        <br/>
+        {{ arr }} <br/>
+        <button @click="addArr">点我向 obj 中添加属性</button>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: { // 用来定义数据
+            name: '林志玲',
+            age: 18,
+            height: 175,
+            obj: {
+                name:''
+            },
+            arr: []
+        },
+        methods: {
+            getName() {
+                console.log(vm.name)
+            },
+            addObj() {
+                // 这里的 name 属性是后面动态添加的，并不是显式定义的
+                this.obj.name = '张三'
+            },
+            addArr(){
+                // this.arr是有的,但如果你突然搞个this.arr[0]就不行了
+                this.arr.push("我是麦兜")
+            }
+        }
+    })
+    console.log(vm.$data.name)
+
+</script>
+
+</html>

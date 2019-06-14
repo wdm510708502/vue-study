@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .colorGreen{
+        color:red
+    }
+    
+    </style>
+</head>
+<body>
+    <div id="app">
+   {{name}}
+    
+   <!-- 下拉框 -->
+
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            name:'麦兜'
+        }
+    })
+
+    console.log(vm.name === vm.$data.name);
+    console.log(vm == vm.$data);
+    console.log(vm);
+    console.log(vm.$data);
+    
+    </script>
+</body>
+</html>

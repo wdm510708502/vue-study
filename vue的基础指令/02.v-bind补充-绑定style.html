@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h4>以对象的形式给元素绑定 style 属性</h4>
+        <div v-bind:style="{ color: mycolor, fontSize: mysize }">
+            大白
+        </div>
+        <h4>以数组的形式给元素绑定 style 属性</h4>
+        <div v-bind:style="[a, b]">
+           麦兜
+        </div>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            mycolor: 'green',
+            mysize: '18px',
+            a: {
+                color: 'yellow'
+            },
+            b: {
+                fontSize: '18px'
+            }
+        }
+    })
+
+</script>
+
+</html>

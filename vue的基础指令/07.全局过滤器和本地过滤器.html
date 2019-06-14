@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+   <div id="app1">
+       <!-- | 的名称是管道符号 -->
+        <h2>{{ name | quanju(',我才是参数1,value不算参数') }}</h2>
+        <div>{{ name2 | bendi }}</div>
+   </div>
+
+   <div id="app2">
+        <h2>{{ name | quanju(',我才是参数1,value不算参数')}}</h2>
+        <!-- 用了vm1的局部过滤器,所以显示不出来,还会报错:Failed to resolve filter: bendi -->
+        <div>{{ name2 | bendi }}</div>
+   </div>
+
+    <script src="./vue.js"></script>
+    <script>
+    // 过滤器,在这里,可以理解为,把一组数据处理一下,再释放出去
+
+    // 1.全局过滤器,可作用到所有视图.
+    // 2.注意点,需要写在Vue的构造函数中,所以要写实例化之前
+    // 3.这里的value是必写,而且是固定写法,放在第一个位置,所以不算是参数
+    Vue.filter('quanju', function(value,canshu1){
+        return value + '-全局' + canshu1
+    })
+     
+    var vm1 = new Vue({
+        el:'#app1',
+        data: {
+            name: '我是vm1用全局过滤器',
+            name2: '我是vm1用自己的本地过滤器'
+        },
+         // 1.本地过滤器(局部过滤器),只能作用到当前实例出来的对象的视图
+         // 2.注意细节,这里是filters,和全局变量的filter多了个's',且和data是同级的,不要
+         //   写在data里面了
+         filters:{
+             bendi: function(value){
+                 return value + '-我是vm1的局部过滤器'
+             }
+         }
+    })
+
+    var vm2 = new Vue({
+        el:'#app2',
+        data:{
+            name:'我是vm2用全局过滤器',
+            name2: '我是vm2用vm1的本地过滤器'
+        }
+    })
+   
+    
+    </script>
+</body>
+</html>

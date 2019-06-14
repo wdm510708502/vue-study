@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h4> 1.0 给输入框绑定</h4>
+        {{ name }}<br/>
+        <!-- 若给text添加value值,在vue加载上后就会被v-model替换 -->
+        <input type="text" v-model = "name">
+
+        <h4> 2.0 给文本域绑定</h4>
+        {{ textareaVal }}<br/>
+        <!-- style="resize: none"是不允许文本框的大小变化 -->
+        <textarea cols="30" rows="10" style="resize: none" v-model="textareaVal"></textarea>
+
+        <h4> 3.0 给筛选框绑定</h4>
+        <h5>单个复选框</h5>
+        {{ singleCheck }} <br/>
+        <!-- 只要在type="checkbox"写上checked就默认被选中,而且checked=""无论加什么值都是选中false也一样 -->
+        <input type="checkbox" v-model="singleCheck">
+
+        <h5>多个复选框</h5>
+        {{ manyCheck }} <br/> 爱好：
+        <!-- 1.data里manyCheck:[] 要给数组且只能是数组,不能是对象,不然点击会全选,
+               且出现true或false,因为默认就是这样
+             2.而且必须要给checkbox一个value属性和属性值,不然添加在数组上的是null-->
+        <input type="checkbox" v-model="manyCheck" value="打游戏">打游戏
+        <input type="checkbox" v-model="manyCheck" value="看动漫">看动漫
+        <input type="checkbox" v-model="manyCheck" value="学习">学习
+
+        <h5>给单复选框绑定</h5>
+        {{ gender }} <br/> 性别：
+        <!-- 1.因为v-model的原因,radio不用设置name且值相同了
+             2.且data的gender也不用给个数组,因为readio的原因
+             3.但要设置value值 -->
+        <input type="radio" value="男" v-model="gender">男
+        <input type="radio" value="女" v-model="gender">女
+        <input type="radio" value="保密" v-model="gender">保密
+
+        <h5>给下拉框绑定</h5>
+        {{ selecVal }} <br/>
+        <!-- 1.原始是给option一个selected属性,就可以默认选中一个选项
+             2.vue的话,只需要在data中的selecVal:'深圳',就可以选中默认的选项-->
+        <select v-model="selecVal">
+            <option value="北京">北京</option>
+            <option value="上海">上海</option>
+            <option value="深圳">深圳</option>
+            <option value="广州">广州</option>
+        </select>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+           name:'',
+           textareaVal:'',
+           singleCheck: true,
+           manyCheck:[],
+           gender:'',
+           selecVal:'深圳'
+        }
+    })
+
+</script>
+
+</html>
