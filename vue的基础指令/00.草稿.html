@@ -14,7 +14,12 @@
 </head>
 <body>
     <div id="app">
-   {{name}}
+   {{now}}
+   {{now}}
+   {{now}}
+   {{now}}
+   {{now}}
+   {{now}}
     
    <!-- 下拉框 -->
 
@@ -25,15 +30,17 @@
     var vm = new Vue({
         el:'#app',
         data:{
-            name:'麦兜'
-        }
+            name:'麦兜',
+            now:  Date.now()
+        },
+        computed: {
+  now: function () {
+      console.log(1);
+    return now
+  }
+}
     })
 
-    console.log(vm.name === vm.$data.name);
-    console.log(vm == vm.$data);
-    console.log(vm);
-    console.log(vm.$data);
-    
     </script>
 </body>
 </html>

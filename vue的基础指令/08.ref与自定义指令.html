@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" ref="myFocus" v-myfocus />
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+      // // 调用方法获取焦点
+      // myFocus.focus()
+      // 使用 ref 操作 dom 分为两步：
+      //  1.0 给元素通过 ref 属性设置一个别名
+      //  2.0 将来在 vue 实例中可以通过 this.$refs.别名 来获取这个 dom 元素
+      // 注意:focus()是方法是去触发使其获得焦点,onfocus是事件属性表示获取焦点时去执行什么
+
+      // 1.ref方式,不推荐使用
+      // var vm = new Vue({
+      //   el: "#app",
+      //   //  mounted()这个方法会在 vue 实例被创建之后执行
+      //   mounted() {
+      //     console.log("我是 vue 创建之后执行的 mounted");
+      //     this.$refs.myFocus.focus();
+      //   }
+      // });
+
+      // 2.自定义指令(取得指令名不能出现大写字母)
+      // Vue.directive("myfocus", {
+      //   inserted: function(el) {
+      //     // el: 使用当前指令的dom元素
+      //     console.log(el);
+      //     // 获取焦点
+      //     el.focus();
+      //   }
+      // });
+      // var vm = new Vue({
+      //   el: "#app",
+      //   data: {}
+      // });
+
+      // 3.局部自定义指令(取得指令名不能出现大写字母)
+      var vm = new Vue({
+        el: "#app",
+        // 局部自定义指令
+        directives: {
+          myfocus: {
+            inserted: function(el) {
+              el.focus();
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+</head>
+<body>
+    <div id="app">
+    <!-- 直接在模板中调用方法 -->
+    <h3>模板方法</h3>
+    {{ msg.split('').reverse().join('') }}<br/>
+
+    <!-- 普通的方法 -->
+    <h3>普通的方法</h3>
+    {{ reverseMsgFn() }}<br/>
+    {{ reverseMsgFn() }}<br/>
+
+    <!-- 使用计算属性,注意是属性,使用和data一样,所以后面不用加()执行 -->
+    <h3>计算属性</h3>
+    {{ reverseMsg }}<br/>
+    {{ reverseMsg }}
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+    var vm = new Vue({
+        el:'#app',
+        data: {
+            msg: 'message'
+        },
+        methods: {
+            reverseMsgFn() {
+                // 普通方法会调用两次
+                console.log(Date.now())
+                return this.msg.split('').reverse().join('')
+            },
+            changeMsg() {
+                this.msg = 'abc'
+            }
+        },
+        // 定义计算属性,定义属性在依赖条件不变得情况下,只调用一次,因为有缓存,但依赖条件改变
+        // 才会再调用一次
+        computed: {
+            reverseMsg: function (){
+                console.log(Date.now());
+                // msg是这个计算属性的依赖条件
+                return this.msg.split('').reverse().join('')
+            }
+        },
+
+    })
+    </script>
+</body>
+</html>

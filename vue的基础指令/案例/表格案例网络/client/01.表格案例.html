@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    #app {
+      width: 600px;
+      margin: 10px auto;
+    }
+
+    .tb {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .tb th {
+      background-color: #0094ff;
+      color: white;
+    }
+
+    .tb td,
+    .tb th {
+      padding: 5px;
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    .add {
+      padding: 5px;
+      border: 1px solid black;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="add">
+      品牌名称:
+      <input type="text" v-model="addName" v-mydir>
+      <input type="button" value="添加" @click="add">
+    </div>
+
+    <div class="add">
+      品牌名称:
+      <input type="text" placeholder="请输入搜索条件">
+    </div>
+
+    <div>
+      <table class="tb">
+        <tr>
+          <th>编号</th>
+          <th>品牌名称</th>
+          <th>创立时间</th>
+          <th>操作</th>
+        </tr>
+        <tr v-for="item in dataList">
+          <td>{{ item.id }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.time | myfilter }}</td>
+          <td>
+            <a href="#" @click="mydelete(item.id)">删除</a>
+          </td>
+        </tr>
+        <tr v-if="dataList.length === 0">
+          <td colspan="4">没有品牌数据</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+<script src="./vue.js"></script>
+<script src="./axios.js"></script>
+<script src="./moment.js"></script>
+<script>
+  // 自定义指令 自定义指令不能出现大写字母
+  //打开页面获取输入框焦点,自定义属性,还必须实例化的时候才会起作用
+  Vue.directive('mydir', {
+    inserted: function(el) {
+      el.focus()
+    }
+  })
+  // 过滤器
+  Vue.filter('myfilter', function(value) {
+    return moment(value).format('YYYY-MM-DD hh:mm:ss a')
+  })
+  new Vue({
+    el: '#app',
+    data: {
+      // 数据源
+      dataList: [],
+      // 要新增的数据
+      addName: ''
+    },
+    methods: {
+      // 新增数据
+      add() {
+        axios({
+          method: 'POST',
+          url: 'http://localhost:3000/brand',
+          data: {
+            name: this.addName,
+            time: Date.now()
+          }
+        }).then(res => {
+          if (res.status === 201) {
+            // 重新渲染页面
+            this.getData()
+          }
+        })
+      },
+      // 获取所有数据
+      getData() {
+        // 请求服务器 
+        axios({
+          method: 'GET',
+          url: 'http://localhost:3000/brand'
+        }).then(res => {
+          this.dataList = res.data
+        })
+      },
+      // 删除id对应的数据
+      mydelete(id) {
+        axios({
+          method: 'DELETE',
+          url: 'http://localhost:3000/brand/' + id,
+        }).then(res => {
+          if (res.status === 200) {
+            // 刷新页面
+            this.getData()
+          }
+        })
+      }
+    },
+    // 打开页面时加载数据
+    mounted() {
+      this.getData()
+    }
+  })
+
+</script>
+
+</html>
