@@ -61,7 +61,7 @@
             <td>{{ item.name }}</td>
             <td>{{ item.date | time }}</td>
             <td>
-              <a href="#" v-on:click="del(index)">删除</a>
+              <a href="#" v-on:click="del(item.name)">删除</a>
             </td>
           </tr>
           <tr>
@@ -121,6 +121,12 @@
         methods: {
           fn() {
             // 将对象添加到数组中
+            for(var i = 0; this.arr.length > i;i++){
+              if(this.arr[i].name == this.name){
+              alert('你的名字有了')
+              return
+              }
+            }
             if (this.name != "")
               vm.arr.push({
                 name: this.name,
@@ -130,10 +136,19 @@
             this.name = "";
           },
           del(val) {
-            console.log(val);
+            console.log(this.newArr);
+            // console.log(val);
             if (confirm("您确定删除吗")) {
               // 将 index 对应的数据从数组中删除
-              vm.arr.splice(val, 1);
+              // vm.arr.splice(val, 1);
+              for(var i = 0; i < this.arr.length;i++){
+                if(this.arr[i].name == val){
+                  this.arr.splice(i,1)
+                  localStorage.setItem("storeArr", JSON.stringify(this.arr));
+                  break
+                }
+              }
+              
             }
           },
           foo(){

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    /* 默认前缀 */
+     .v-leace,
+     .v-enter-to{
+         opacity: 1;
+         transform: translate(0,0);
+     }
+     .v-leave-active,
+     .v-enter-active{
+         transition: all 1s
+     }
+     .v-leave-to,
+     .v-enter{
+         opacity: 0;
+         transform: translate(200px,0);
+     }
+
+     /* 带my的前缀 */
+     /* 默认前缀 */
+     .my-leace,
+     .my-enter-to{
+         opacity: 1;
+         transform: translate(0,0);
+     }
+     .my-leave-active,
+     .my-enter-active{
+         transition: all 1s
+     }
+     .my-leave-to,
+     .my-enter{
+         opacity: 0;
+         transform: translate(0,200px);
+     }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="showOrHide">点我隐藏和显示</button>
+        <!-- 将元素添加到 transition 标签中 -->
+        <transition>
+            <div v-if="isShow">我是一个x轴的司机</div>
+        </transition>
+        <transition name="my">
+            <div v-if="isShow">我是一个y轴的司机</div>
+        </transition>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+    var vm = new Vue({
+        el:'#app',
+        data: {
+            isShow: true
+        },
+        methods: {
+            showOrHide(){
+               this.isShow = !this.isShow
+            }
+        }
+    })
+
+    </script>
+</body>
+</html>

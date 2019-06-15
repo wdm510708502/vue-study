@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+            #app {
+                width: 800px;
+                height: 600px;
+                margin: 0 auto;
+                border: 1px solid #ccc;
+            }
+    
+            .tophead {
+                width: 800px;
+                height: 80px;
+                border: 5px solid red;
+                box-sizing: border-box;
+            }
+    
+            .sidebar {
+                float: left;
+                width: 200px;
+                height: 520px;
+                border: 5px solid blue;
+                box-sizing: border-box;
+            }
+    
+            .content {
+                float: right;
+                width: 600px;
+                height: 520px;
+                border: 5px solid green;
+                box-sizing: border-box;
+            }
+        </style>
+</head>
+<body>
+        <div id="app" class="app">
+                <div class="tophead"></div>
+                <div class="sidebar">
+                    <ul>
+                        <li>
+                            <!-- 设置跳转的路由-->
+                            <router-link to="/music">音乐</router-link>
+                            <!-- 这里的 router-link 将来会被解析为 a 标签，并且 to  属性会解析为 href 属性加入 # -->
+                        </li>
+                        <li>
+                            <router-link to="/news">新闻</router-link>
+                        </li>
+                        <li>
+                            <router-link to="/sports">体育</router-link>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content">
+                    <!-- 设置路由对应组件渲染的容器 -->
+                    <router-view></router-view>
+                </div>
+            </div>
+
+    <script src="./vue.js"></script>
+    <script src="./vue-router.js"></script>
+    <script>
+    //1.定义(路由)组件
+    //可以从其他文件import进来
+    const Music = { template: '<div>我是音乐</div>' }
+    const News = { template: '<div>我是新闻</div>' }
+    const Sports = { template: '<div>我是体育</div>' }
+
+    //2.定义路由
+    const routes = [
+  { path: '/music', component: Music },
+  { path: '/news', component: News },
+  { path: '/sports', component: Sports }
+]
+    
+    // 3. 创建 router 实例，然后传 `routes` 配置
+    const router = new VueRouter({
+  routes // (缩写) 相当于 routes: routes
+})
+
+// 4. 创建和挂载根实例。
+const app = new Vue({
+  router
+}).$mount('#app')
+   
+   
+
+    </script>
+</body>
+</html>

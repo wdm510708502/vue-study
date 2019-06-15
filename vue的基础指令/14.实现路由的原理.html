@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+    #app {
+        width: 800px;
+        height: 600px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+    }
+
+    .tophead {
+        width: 800px;
+        height: 80px;
+        border: 5px solid red;
+        box-sizing: border-box;
+    }
+
+    .sidebar {
+        float: left;
+        width: 200px;
+        height: 520px;
+        border: 5px solid blue;
+        box-sizing: border-box;
+    }
+
+    .content {
+        float: right;
+        width: 600px;
+        height: 520px;
+        border: 5px solid green;
+        box-sizing: border-box;
+    }
+    
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="tophead"></div>
+      <div class="sidebar">
+        <ul>
+          <li><a href="#/music">音乐</a></li>
+          <li><a href="#/news">新闻</a></li>
+          <li><a href="#/sports">体育</a></li>
+        </ul>
+      </div>
+
+      <!-- 渲染内容的容器 -->
+      <div class="content"></div>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+      // 这些都是DOM操作的例子
+      var music = '这是音乐'
+      var news = '这是新闻'
+      var sports = '这是体育'
+      // 得到内容区域容器
+      var content = document.querySelector('.content')
+      // 实现内容的切换
+      // 得到hash(哈希值)的改变
+      // 当一个窗口的hash(URL 中 # 后面的部分)改变时就会触发hashchange事件
+      window.onhashchange = function () {
+        // 根据不同的hash值向content中渲染不同的内容
+        // 的到hash值这里是#/xxx
+        var hash = window.location.hash
+        // replace() 是string对象的替换字符串的方法,现在得到xxx
+        var path = hash.replace('#/','')
+        // 判断 path
+        switch (path) {
+            case 'music':
+                content.innerHTML = music
+                break;
+            case 'news':
+                content.innerHTML = news
+                break
+            case 'sports':
+                content.innerHTML = sports
+                break
+        }
+      }
+
+    </script>
+  </body>
+</html>

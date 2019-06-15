@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    
+    </style>
+</head>
+<body>
+    <div id="app">
+    姓:<input type="text" v-model="firstName">
+    名:<input type="text" v-model="lastName"><br>
+    {{ fullName }}
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            firstName:'',
+            lastName:'',
+            fullName:''
+        },
+        // 定义侦听器(侦听的是指针或者说地址,改变的时候触发)
+        watch: {
+            // 当firstName改变时,会触发这个侦听器
+            firstName: function(newVal, oldVal){
+                //重新获得名字
+                this.fullName = newVal + this.lastName
+            },
+            // 当lastName改变时,也要触发侦听器
+            lastName: function(newVal, oldVal){
+                //重新获得名字
+                this.fullName = this.firstName + newVal
+            }
+        },
+    })
+
+    </script>
+</body>
+</html>

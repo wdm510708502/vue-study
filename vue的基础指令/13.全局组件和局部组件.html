@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .mybox {
+        display: flex;
+      }
+
+      .mybox span {
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+        border: 1px solid black;
+        text-align: center;
+        line-height: 20px;
+        cursor: pointer;
+      }
+
+      .mybox input {
+        width: 40px;
+        height: 22px;
+        line-height: 22px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <mycom></mycom>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+      // 定义一个全局组件
+      // Vue.component('mycom',{
+      //    // 组件的结构和样式
+      //    template:` <div class="mybox">
+      //         <span @click="sub">-</span>
+      //         <input type="text" v-model = "num">
+      //         <span @click="add">+</span>
+      //     </div>
+      //    `,
+      //    //就data的写法和下面的不同
+      //    data(){
+      //        return {
+      //            num: 1
+      //        }
+      //     },
+      //     methods: {
+      //         sub(){
+      //             if(this.num > 0){
+      //             this.num --
+      //             }
+      //         },
+      //         add(){
+      //             this.num ++
+      //         }
+      //     },
+      // })
+
+      var mycom = {
+            template: ` <div class="mybox">
+            <span @click="sub">-</span>
+            <input type="text" v-model = "num">
+            <span @click="add">+</span>
+            </div>`,
+            //就data的写法不同
+            //数据源
+            data() {
+              return {
+                num: 1
+              };
+            },
+            // 方法
+            methods: {
+              sub() {
+                if (this.num > 0) {
+                  this.num--;
+                }
+              },
+              add() {
+                this.num++;
+              }
+            }
+          }
+
+      var vm = new Vue({
+        el: "#app",
+        // 局部组件,建议把mycon的属性值提取了出去
+        components: {
+          mycom
+        }
+      });
+    </script>
+  </body>
+</html>

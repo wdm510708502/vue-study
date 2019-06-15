@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+      <a :href="url">{{ url }}</a>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+            var vm = new Vue({
+              el: "#app",
+              data: {
+                location: {
+                  protocal: "http:",
+                  host: "www.qq.com"
+                },
+                url: ""
+              },
+            // immediate：初始绑定加载时就进行监听
+            // deep：一般使用于对引用类型的监听，深度监听，如监听一个Object，
+            // 只要Object里面的任何一个字段发生变化都会被监听，但是比较消耗性能，
+            // 根据需求使用，能不用则不用。
+              watch: {
+                location: {
+                  deep: true,
+                  immediate: true,
+                  // 传watch属性时必须改为对象,handler也是固定的
+                  handler(newValue, oldValue) {
+                    this.url = newValue.protocal + "//" + newValue.host;
+                  }
+                }
+              }
+            });
+            
+            //   也可写在外面
+            //   vm.$watch(
+            //     "location",
+            //     function(newValue, oldValue) {
+            //       this.url = newValue.protocal + "//" + newValue.host;
+            //     },
+            //     {
+            //       deep: true,
+            //       immediate: true
+            //     }
+            //   );
+    </script>
+  </body>
+</html>
