@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+      <ul>
+        <li>
+          <router-link to="/login">登录 </router-link>
+        </li>
+        <li>
+          <router-link to="/index">首页 </router-link>
+        </li>
+      </ul>
+      <router-view></router-view>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script src="./vue-router.js"></script>
+    <script>
+      // 实现原理window.location.hash
+      // 1.定义路由组件
+      let login = {
+          template: `<div>我是登录<br><button @click="toIndex">点我就跳去首页</button></div>`
+          ,methods: {
+              toIndex() {
+                 //通过编程式导航跳转到 index
+                 console.log(this.$router);
+                this.$router.push('/index')
+                console.log(this.$router);
+              }
+          },
+      }
+
+      let index = {
+          template: `<div>我是首页了<br><button @click="toLogin">点我就跳去登录</button></div>`
+          ,methods: {
+              toLogin(){
+                    //通过编程式导航跳转到 login
+                    console.log(this.$router);
+                this.$router.push('/login')
+                console.log(this.$router);
+              }
+          },
+      }
+
+      // 2.设置路由选项
+      let routes = [
+          {path:'/login',component: login},
+          {path:'/index',component: index}
+      ]
+
+      // 3.实例化路由对象
+      let router = new VueRouter({
+          routes
+      })
+
+      // 4.注册
+      var vm = new Vue({
+          el:'#app',
+          router
+      })
+      
+    </script>
+  </body>
+</html>

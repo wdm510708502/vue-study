@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>备忘录</title>
+        <link rel="stylesheet" type="text/css" href="./css/index.css" />
+        <style>[v-cloak] { display: none; }</style>
+    </head>
+
+    <body>
+    <section class="todoapp">
+      <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo"
+          autofocus autocomplete="off"
+          placeholder="What needs to be done?"
+          v-model="newTodo"
+          @keyup.enter="addTodo">
+      </header>
+      <section class="main" v-show="todos.length" v-cloak>
+        <input class="toggle-all" type="checkbox" v-model="allDone">
+        <ul class="todo-list">
+          <li v-for="todo in filteredTodos"
+            class="todo"
+            :key="todo.id"
+            :class="{ completed: todo.completed, editing: todo == editedTodo }">
+            <div class="view">
+              <input class="toggle" type="checkbox" v-model="todo.completed">
+              <label @dblclick="editTodo(todo)">{{ todo.title }}</label>
+              <button class="destroy" @click="removeTodo(todo)"></button>
+            </div>
+            <input class="edit" type="text"
+              v-model="todo.title"
+              v-todo-focus="todo == editedTodo"
+              @blur="doneEdit(todo)"
+              @keyup.enter="doneEdit(todo)"
+              @keyup.esc="cancelEdit(todo)">
+          </li>
+        </ul>
+      </section>
+      <footer class="footer" v-show="todos.length" v-cloak>
+        <span class="todo-count">
+          <strong>{{ todos.length }}</strong> {{ remaining | pluralize }} left
+        </span>
+        <ul class="filters">
+          <li><a href="#/all" :class="{ selected: visibility == 'all' }">All</a></li>
+          <li><a href="#/active" :class="{ selected: visibility == 'active' }">Active</a></li>
+          <li><a href="#/completed" :class="{ selected: visibility == 'completed' }">Completed</a></li>
+        </ul>
+        <button class="clear-completed" @click="removeCompleted" v-show="todos.length > remaining">
+          Clear completed
+        </button>
+      </footer>
+    </section>
+        <footer class="info">
+            <p>双击编辑一条备忘录</p>
+        </footer>
+
+    </body>
+
+    <script language="JavaScript" src="./js/vue.min.js"></script>
+
+</html>
+
+<script>
+
+
+// 本地缓存设置
+// 防止页面关闭后，数据全部丢失的问题
+var STORAGE_KEY = 'todos-vuejs-2.0'
+var todoStorage = {
+    
+    // 获取本地存储中的内容
+    fetch:function(){
+        //  JSON.parse()解析一个json字符串
+        //    localStorage.getItem 从本地存储中获取STORAGE_KEY字段的值
+        var todos = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+        //    foreach遍历todos，两个参数分别为遍历出的每一个子单元及对应的索引
+        todos.forEach(function(todo,index){
+            todo.id = index;
+        })
+        todoStorage.uid = todos.length;
+        return todos;
+    },
+    
+    // 保存时将内容写进本地存储
+    save:function(todos){
+        // localStorage.setItem 将todos转化成字符串存入本地存储，键名为STORAGE_KEY
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(todos))
+    }
+    
+}
+
+// 可视化状态过滤设置
+//    包括全选（all）、选择未完成（active）、选择已完成（completed）
+var filters = {
+    all:function(todos){
+        return todos;
+    },
+    
+    //    filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
+    active:function(todos){
+        return todos.filter(function(todo){
+            return !todo.completed;
+        })
+    },
+    
+    completed:function(todos){
+        return todos.filter(function(todo){
+            return todo.completed;
+        })
+    }
+}
+
+
+// vue实例化
+var app = new Vue({
+    
+    //    data 参数设置
+    data:{
+        todos:todoStorage.fetch(),
+        newTodo:'',
+        editedTodo:null,
+        visibility:'all'
+    },
+    
+    //    watch 监视todos在本地储存中的变化
+    watch:{
+        todos:{
+            handler:function(todos){
+                todoStorage.save(todos)
+            },
+            deep:true
+        }
+    },
+    
+    //    computed 检测数据发生变动时执行函数
+    computed:{
+        
+        filteredTodos:function(){
+            return filters[this.visibility](this.todos)
+        },
+        
+        remaining:function(){
+            return filters.active(this.todos).length
+        },
+        
+        allDone:{
+            get:function(){
+                return this.remaining === 0
+            },
+            
+            set:function(value){
+                this.todos.forEach(function(todo){
+                    todo.completed = value
+                })
+            }
+            
+        }
+    },
+    
+    //    methods 方法设置
+    methods:{
+        addTodo:function(){
+            var value = this.newTodo && this.newTodo.trim()
+            if(!value){
+                return;
+            }
+            this.todos.push({
+                id:todoStorage.uid++,
+                title:value,
+                completed:false
+            })
+            this.newTodo = ''
+        },
+        
+        removeTodo:function(todo){
+            this.todos.splice(this.todos.indexOf(todo),1)
+        },
+        
+        editTodo:function(todo){
+            this.beforeEditCache = todo.title;
+            this.editedTodo = todo
+        },
+        
+        doneEdit:function(todo){
+            if(!this.editedTodo){
+                return;
+            };
+            this.editedTodo = null;
+            todo.title = todo.title.trim()
+            if(!todo.title){
+                this.removeTodo(todo)
+            }
+        },
+        
+        cancelEdit:function(todo){
+            this.editedTodo = null;
+            todo.title = this.beforeEditCache
+        },
+        
+        removeCompleted:function(){
+            this.todos = filters.active(this.todos)
+        }
+    },
+    
+    directives:{
+        'todo-focus':function(el,binding){
+            if(binding.value){
+                el.focus()
+            }
+        }
+    }
+})
+
+
+// hashchange URL的片段标识符更改触发
+function onHashChange(){
+    var visbility = window.location.hash.replace(/#\/?/, '');
+    if(filters[visbility]){
+        app.visibility = visbility
+    }else{
+        window.location.hash = '';
+        app.visbility = 'all'
+    }
+}
+
+window.addEventListener('hashchange',onHashChange)
+onHashChange()
+
+// mount 手动挂载
+app.$mount('.todoapp')
+</script>

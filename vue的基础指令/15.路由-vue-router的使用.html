@@ -66,28 +66,37 @@
     <script>
     //1.定义(路由)组件
     //可以从其他文件import进来
-    const Music = { template: '<div>我是音乐</div>' }
+    const Music = { template: '<div @click="fn">我是音乐</div>',
+    methods:{
+        fn(){
+            console.log('哈哈');
+        }
+    } }
     const News = { template: '<div>我是新闻</div>' }
     const Sports = { template: '<div>我是体育</div>' }
 
-    //2.定义路由
+    //2.定义路由,routes的中文是公路的意思
     const routes = [
   { path: '/music', component: Music },
   { path: '/news', component: News },
   { path: '/sports', component: Sports }
 ]
     
-    // 3. 创建 router 实例，然后传 `routes` 配置
+    // 3. 创建 router 实例，然后传 `routes` 配置,router的中文是路由的意思
     const router = new VueRouter({
   routes // (缩写) 相当于 routes: routes
 })
 
-// 4. 创建和挂载根实例。
-const app = new Vue({
-  router
-}).$mount('#app')
+// 4. 创建和挂载根实例。两种写法都是一样的
+// const app = new Vue({
+//   router
+// }).$mount('#app')
    
-   
+var vm = new Vue({
+        el: '#app',
+        // router: router
+        router // 缩写
+    })
 
     </script>
 </body>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>todo1.0</title>
+    <link rel="stylesheet" href="./css/index.css" />
+  </head>
+  <body>
+    <div id="app" class="todoapp">
+      <header class="header">
+        <h1>云备忘录</h1>
+        <input
+          type="text"
+          class="new-todo"
+          placeholder="接下来要做什么?"
+          v-model="newTodo"
+          @keyup.enter="addTodo"
+          v-focus
+        />
+      </header>
+      <section class="main">
+        <input
+          class="toggle-all"
+          id="toggle-all"
+          type="checkbox"
+          V-model="isAll"
+        />
+        <label for="toggle-all">一键全部完成</label>
+        <!-- v-for 默认行为试着不改变整体，而是替换元素。
+        迫使其重新排序的元素，你需要提供一个 key 的特殊属性 -->
+        <ul class="todo-list">
+          <li
+            v-for="(todo,index) in newTodos"
+            :key="'todo-' + index"
+            :class="{ completed: todo.completed}"
+          >
+            <div class="view">
+              <input class="toggle" type="checkbox" v-model="todo.completed" />
+              <label @dblclick="editTodo(todos)">{{ todo.title }}</label>
+              <button class="destroy" @click="removerTodo(todo)"></button>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <!-- v-show="showTodos" -->
+      <footer class="footer">
+        <span class="todo-count"
+          ><strong>{{ undone.length }}</strong
+          >项未完成</span
+        >
+        <ul class="filters">
+          <li>
+            <a href="#" @click.prevent="fn(0)">全部</a>
+          </li>
+          <li>
+            <a href="#" @click.prevent="fn(1)">未完成</a>
+          </li>
+          <li>
+            <a href="#" @click.prevent="fn(2)">已完成</a>
+          </li>
+        </ul>
+        <button
+          class="clear-completed"
+          v-show="complete.length > 0"
+          @click="empty"
+        >
+          清空已完成
+        </button>
+      </footer>
+    </div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <script src="./js/vue.js"></script>
+    <script>
+      // var todo = localStorage.getItem('store')
+      // 数组的方式存,也要以数组的方式取+
+      var todos = JSON.parse(localStorage.getItem("todos") || "[]");
+      var vm = new Vue({
+        el: "#app",
+        data: {
+          newTodo: "",
+          todos: todos,
+          value: 0,
+          isAll: false
+        },
+        methods: {
+          //增
+          addTodo() {
+            if (!this.newTodo) {
+              return;
+            }
+            this.todos.unshift({
+              title: this.newTodo,
+              completed: false
+            });
+            this.newTodo = "";
+            //  这个以字符串的方式存
+            //  localStorage.setItem('todos',this.todo)
+            //  这个以数组的方式存
+            localStorage.setItem("todos", JSON.stringify(this.todos));
+          },
+          //删
+          removerTodo(item) {
+            var index = this.todos.indexOf(item);
+            this.todos.splice(index, 1);
+            localStorage.setItem("todos", JSON.stringify(this.todos));
+          },
+          fn(num) {
+            this.value = num;
+          },
+          empty() {
+            this.todos = this.todos.filter(item => {
+              return !item.completed;
+            });
+          }
+        },
+        // 深度监听todos的属性值(completed)  监听的方法
+        watch: {
+          todos: {
+            // deep:true,是深度监监听,因为改变的是对象内的属性,监听是监听指针的变化
+            deep: true,
+            handler: function(newValue, oldValue) {
+              localStorage.setItem("todos", JSON.stringify(newValue));
+              todos = JSON.parse(localStorage.getItem("todos") || "[]");
+            }
+          },
+          //监听全选的属性
+          isAll: {
+            handler: function(newValue, oldValue) {
+              if (newValue) {
+                for (var i = 0; i < this.todos.length; i++) {
+                  this.todos[i].completed = true;
+                  // console.log(this.todos[i].completed);
+                }
+              } else {
+                for (var i = 0; i < this.todos.length; i++) {
+                  this.todos[i].completed = false;
+                  // console.log(this.todos[i].completed);
+                }
+              }
+            }
+          }
+        },
+        computed: {
+          // 计算属性的方法  监听todos的属性值
+          // todos(){
+          //   localStorage.setItem("todos", JSON.stringify(this.todos));
+          //   return JSON.parse(localStorage.getItem("todos") || "[]");
+          // },
+          // 显示未完成
+          undone() {
+            return this.todos.filter(item => {
+              return !item.completed;
+            });
+          },
+          complete() {
+            return this.todos.filter(item => {
+              return item.completed;
+            });
+          },
+          newTodos() {
+            if (this.value == 0) {
+              //返回全部
+              return this.todos;
+            } else if (this.value == 1) {
+              //返回未完成
+              return this.undone;
+            } else if (this.value == 2) {
+              //返回已完成
+              return this.complete;
+            }
+          }
+        },
+        //自定义指令,打开页面获取焦点
+        directives: {
+          focus: {
+            inserted: function(el) {
+              el.focus();
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

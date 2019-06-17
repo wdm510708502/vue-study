@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+    #app {
+        width: 800px;
+        height: 600px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+    }
+
+    .tophead {
+        width: 800px;
+        height: 80px;
+        border: 5px solid red;
+        box-sizing: border-box;
+    }
+
+    .sidebar {
+        float: left;
+        width: 200px;
+        height: 520px;
+        border: 5px solid blue;
+        box-sizing: border-box;
+    }
+
+    .content {
+        float: right;
+        width: 600px;
+        height: 520px;
+        border: 5px solid green;
+        box-sizing: border-box;
+    }
+    </style>
+  </head>
+  <body>
+      <div id="app" class="app">
+<div class="tophead"></div>
+<div class="sidebar">
+<ul>
+<li>
+    <!-- 设置跳转的路由 -->
+    <router-link to="/music">音乐</router-link>
+    <!-- 这里的router-link 将来会被解析为a标签，并且to属性会解析为 href 属性加入 #  -->
+</li>
+<li>
+    <router-link to="/news/1">新闻一</router-link>
+</li>
+<li>
+        <router-link to="/news/2">新闻二</router-link>
+    </li>
+</ul>
+</div>
+<div class="content">
+    <!-- 设置路由对应组件渲染的容器 -->
+<router-view></router-view>
+</div>
+</div>
+      </div>
+    
+
+    <script src="./vue.js"></script>
+    <script src="./vue-router.js"></script>
+    <script>
+     //实现原理
+     //window.onhashchange
+
+    // 1.定义(路由)组件
+    let music = { template: `<div>我是音乐</div>`}
+    let news = {
+        template:`<div>{{ msg }}, <button @click="getId">点我获取 id</button></div>`,
+        data() {
+            return {
+                msg: ''
+            }
+        },
+        methods: {
+            getId() {
+                console.log('getId')
+                // 获取路由选项
+                let route = this.$route
+                // 获取参数
+                let id = route.params.id
+                console.log(id)
+                // 判断 id
+                if (id == 1) {
+                    this.msg = '我是新闻一'
+                } else {
+                    this.msg = '我是新闻二'
+                }
+            }
+        }
+    
+    }
+  
+    // 2.定义路由路径
+    const routes = [
+        {
+            path:'/music',component: music
+        },
+        {
+            path:'/news/:id',component: news
+        }
+    ]
+
+    // 3.创建路由实例
+    const router = new VueRouter({
+        routes
+    })
+
+    // 4.创建和挂载根实例
+    var vm = new Vue({
+        el:'#app',
+        router
+    })
+    
+    </script>
+  </body>
+</html>
