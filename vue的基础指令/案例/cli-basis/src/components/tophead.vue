@@ -1,5 +1,7 @@
 <template>
-     <div>我是新闻</div>
+    <div class="tophead">
+        我是头部
+    </div>
 </template>
 
 <script>

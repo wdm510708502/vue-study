@@ -1,8 +1,8 @@
 {
-  "name": "wdm",
-  "description": "小项目",
+  "name": "cli-basis",
+  "description": "A Vue.js project",
   "version": "1.0.0",
-  "author": "wang",
+  "author": "wdm510708502 <45309034+wdm510708502@users.noreply.github.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
