@@ -1,4 +1,5 @@
 // main.js 为入口文件，并与app.vue组件向关联使此组件为跟组件
+// 主要职责,将 App.vue 渲染到 index.html
 
 // 模块的导入
 // import fs from 'fs'
@@ -8,6 +9,7 @@ import App from './App.vue'
 
 // 安装 npm i vue-router --save  //save是保存信息的
 // 引入 vue-router
+
 import VueRouter from 'vue-router'
 // 使用VueRouter
 Vue.use(VueRouter)

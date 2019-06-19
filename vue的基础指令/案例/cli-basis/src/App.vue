@@ -20,6 +20,7 @@ import TopHead from './components/tophead'
 // 引入侧边栏的组件文件
 import SideBar from './components/sideBar'
 
+// ES6标准的导出
 export default {
    components: {
      // 注册头部组件
