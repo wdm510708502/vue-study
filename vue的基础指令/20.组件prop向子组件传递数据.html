@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+      <blog-post title="My journey with Vue" one="麦兜"></blog-post>
+      <blog-post title="Blogging with Vue" one="大白"></blog-post>
+      <blog-post title="Why Vue is so fun" one="麦特"></blog-post>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+      // Prop 是你可以在组件上注册的一些自定义特性。
+      // 当一个值传递给一个 prop 特性的时候，
+      // 它就变成了那个组件实例的一个属性。为了给博文组件传递一个标题，
+      // 我们可以用一个 props 选项将其包含在该组件可接受的 prop 列表中：
+      Vue.component("blog-post", {
+        props: ["title","one"],
+        template: "<h3>{{ title }}{{ one }}</h3>"
+      });
+
+      var vm = new Vue({
+        el: "#app"
+      });
+    </script>
+  </body>
+</html>

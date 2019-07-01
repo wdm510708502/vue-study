@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <!-- 我们监听的是一个对象里面某个属性的变化，
+        但是如果当这个对象里面有很多个值的时候，
+        虽然也可以使用第二种方法进行监听，
+        但是这将会是对资源的一种极大的浪费，
+        身为一个严谨的程序员（微笑脸），绝对不能允许这样的事情发生，
+        所以我们可以结合computed（计算属性）对上面的代码进行优化： -->
+    <div id="app">
+        年齡：<input type="number" v-model="info.age"><br>
+        提示信息：<span>{{infoMsg}}</span>
+    </div>
+
+    <script src="./vue.js"></script>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data() {
+          return {
+            info: {
+              age: "",
+              name: "",
+              hobit: ""
+            },
+            infoMsg: ""
+          };
+        },
+        computed: {
+          ageval: function() {
+            return this.info.age;
+          }
+        },
+        watch: {
+          ageval: {
+            handler: function(val, oldval) {
+              var that = this;
+              if (val > 0 && val < 15) {
+                that.infoMsg = "你还是个小孩";
+              } else if (val > 15 && val < 25) {
+                that.infoMsg = "你已经是个少年";
+              } else {
+                that.infoMsg = "你已经长大了";
+              }
+            },
+            // 深度监听，有了计算属性就不用这个了,对象里属性值多的话十分耗性能
+            // deep: true
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+<h1>姓:{{firstName}}</h1>
+<h1>名:{{lastName}}</h1>
+<h1>姓名:{{fullName}}</h1>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+      var vm = new Vue({
+        el: "#app",
+        data:{
+            lastName:'麦',
+            firstName: '兜'
+        },
+        computed: {
+          fullName: {
+            // getter
+            get: function() {
+              return this.firstName + " " + this.lastName;
+            },
+            // setter 这个属性就是当修改fullName时,firstName和lastName也相应的被修改
+            set: function(newValue) {
+                // 按空格切割成数组,为的就是体现setter这个属性的作用
+              var names = newValue.split(" ");
+              this.firstName = names[0];
+              this.lastName = names[names.length - 1];
+            }
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
