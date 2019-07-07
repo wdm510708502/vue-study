@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="name='aaabbb'">点我改变 name</button><br/> {{ name }}<br/>
+        <button @click="addPro">点我给 obj 添加一个属性</button>
+        <input type="text" v-model="obj.name">
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            // 特点：响应式
+            // 后面添加到 data 中的数据是不具备响应式的特点
+            name: 'haha',
+            obj: {}
+        },
+        methods: {
+            addPro() {
+                // 这样是添加不上去的,因为在data中的obj中默认没有name属性
+                // this.obj.name = 123;
+                // 这样才可以添加上去
+                this.$set(this.obj, 'name', '123')
+            }
+        }
+    })
+
+</script>
+
+</html>

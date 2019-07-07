@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 引入 myaxios
 import myaxios from '@/assets/js/myaxios.js'
 // 引入 moment 时间处理插件
-import moment from 'moment'
+// import moment from 'moment'
 // // 引入echarts(可视化图表)
 // import echarts from 'echarts'
 

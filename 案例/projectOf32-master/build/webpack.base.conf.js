@@ -31,7 +31,9 @@ module.exports = {
     // 注意: 它们是以键值对的方式存在
     // 键: 指的是第三方包名
     // 值: 指的是使用包的这个名称
-    "vue":"Vue"
+    "vue":"Vue",
+     // 日期插件
+     "moment":"moment"
   }, 
   output: {
     path: config.build.assetsRoot,
