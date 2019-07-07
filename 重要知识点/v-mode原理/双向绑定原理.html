@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div id="text"></div>
+        <input type="text" id="ipt">
+    </div>
+</body>
+<script>
+    // 定义一个要双向绑定的数据源
+    var obj = {}
+    // 给元素设置方法 defineProperty  
+    // defineProperty: 当元素--设置--属性时会触发 set 方法
+    // defineProperty: 当元素--获取--属性时会触发 get 方法
+    Object.defineProperty(obj, 'name', {
+        get: function () {
+            console.log('get')
+        },
+        set: function (value) {
+            // console.log('set')
+            // 给 obj.name
+            name = value
+            // 2.0 重新渲染结构
+            document.querySelector('#text').innerHTML = value
+        }
+    })
+    //  1.0 当输入内容改变时，数据源需要改变
+    document.querySelector('#ipt').oninput = function () {
+        obj.name = this.value
+    }
+
+</script>
+
+</html>
