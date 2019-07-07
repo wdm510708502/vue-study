@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 视图: view -->
+   <div id="app">
+       <div>{{ count }}</div>
+       <button @click="addOne">按一下加一</button>
+   </div>
+
+  <script src="./vue.js"></script>
+  <script>
+  // 传统的状态管理模式也叫 store 模式
+  new Vue({
+      el:'#app',
+     // 数据 状态 state
+      data: {
+          count: 1
+      },
+     // 行为 actions
+      methods: {
+          addOne(){
+              this.count++
+          }
+      },
+  })
+  </script>
+</body>
+</html>

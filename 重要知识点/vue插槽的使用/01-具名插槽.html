@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h3>father</h3>
+        <mycom>
+           <template slot="one">
+               我是段落1
+           </template>
+           <template slot="two">
+               我是段落2
+           </template>
+           <template slot="three">
+               我是段落3
+           </template>
+           <template>
+               我是段落4
+           </template>
+        </mycom>
+    </div>
+</body>
+<script src="./vue.js"></script>
+<script>
+    Vue.component('mycom', {
+        template: `<div style="border: 5px solid #ccc">
+                <h3>son</h3>
+                <p>段落1</p>
+                <slot name="one"></slot>
+                <p>段落2</p>
+                <slot name="two"></slot>
+                <p>段落3</p>
+                <slot name="three"></slot>
+                <p>段落4</p>
+                <slot></slot>
+            </div>`
+    })
+    new Vue({
+        el: '#app'
+    })
+
+</script>
+
+</html>
