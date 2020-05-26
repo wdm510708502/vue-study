@@ -1,0 +1,46 @@
+{
+  "_from": "usual-tools",
+  "_id": "usual-tools@1.5.0",
+  "_inBundle": false,
+  "_integrity": "sha512-h/uCUfxpAqj71ZPoUYQjjLCnAAIK1f4yLapaaXYE14qkey//b+L9wOsQs9xfwBlOJPJsCjQRQfXw2+vYxFwwxg==",
+  "_location": "/usual-tools",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "usual-tools",
+    "name": "usual-tools",
+    "escapedName": "usual-tools",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/usual-tools/-/usual-tools-1.5.0.tgz",
+  "_shasum": "53d860cd95b196518ff1e59824b54af087efe5e0",
+  "_spec": "usual-tools",
+  "_where": "C:\\Users\\东\\Documents\\GitHub\\personal-study",
+  "author": {
+    "name": "xtd",
+    "email": "xtd18339197689@163.com"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "some common tools for javascript to improve your development efficiency",
+  "keywords": [
+    "javascript",
+    "utils",
+    "tools",
+    "lib"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "usual-tools",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.5.0"
+}
